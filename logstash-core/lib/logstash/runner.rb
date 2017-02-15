@@ -455,7 +455,7 @@ class LogStash::Runner < Clamp::StrictCommand
       nil
     end
   end
-  
+
   # is the user asking for CLI help subcommand?
   def cli_help?(args)
     # I know, double negative
