@@ -242,7 +242,7 @@ module LogStash; class Pipeline < BasePipeline
     # this is useful in the context of pipeline reloading
     collect_stats
 
-    logger.debug("Starting pipeline", default_logging_keys)
+    @logger.debug("Starting pipeline", default_logging_keys)
 
     @finished_execution = Concurrent::AtomicBoolean.new(false)
 
@@ -291,7 +291,7 @@ module LogStash; class Pipeline < BasePipeline
 
     start_workers
 
-    @logger.info("Pipeline started", default_logging_keys)
+    @logger.info("Pipeline started", "pipeline.id" => @pipeline_id)
 
     # Block until all inputs have stopped
     # Generally this happens if SIGINT is sent and `shutdown` is called from an external thread
@@ -572,6 +572,7 @@ module LogStash; class Pipeline < BasePipeline
     # stopped
     wait_for_workers
     clear_pipeline_metrics
+    @logger.info("Pipeline terminated", "pipeline.id" => @pipeline_id)
   end # def shutdown
 
   def force_shutdown!

@@ -162,7 +162,7 @@ module LogStash module Config module Source
 
       add_missing_default_inputs_or_outputs(config_parts) if config_string?
 
-      [PipelineConfig.new(self.class, PIPELINE_ID, config_parts, @settings)]
+      [PipelineConfig.new(self.class, @settings.get("pipeline.id"), config_parts, @settings)]
     end
 
     def match?

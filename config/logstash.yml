@@ -169,3 +169,19 @@
 #
 # Where to find custom plugins
 # path.plugins: []
+#
+# ------------- Multiple Pipelines ------------
+#config.multi_pipeline: true
+#pipelines:
+#- pipeline.id: nginx
+#  pipeline.workers: 2
+#  queue.type: persisted
+#  path.config: "/Users/joaoduarte/projects/logstash/my_01.cfg"
+#- pipeline.id: test
+#  pipeline.workers: 1
+#  queue.type: memory
+#  config.string: "input { generator {} } filter { sleep { time => 1 } } output { stdout {} }"
+#- pipeline.id: businesskpi
+#  pipeline.workers: 4
+#  queue.type: persisted
+#  path.config: "/Users/joaoduarte/projects/logstash/my_03.cfg"

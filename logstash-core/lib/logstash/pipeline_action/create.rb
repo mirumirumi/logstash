@@ -42,6 +42,5 @@ module LogStash module PipelineAction
 
       LogStash::ConvergeResult::ActionResult.create(self, status)
     end
-
   end
 end end

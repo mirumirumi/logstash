@@ -41,6 +41,7 @@ describe LogStash::Runner do
     allow(LogStash::Agent).to receive(:new).with(any_args).and_return(agent)
     allow(agent).to receive(:execute)
     allow(agent).to receive(:shutdown)
+    LogStash::Config::SOURCE_LOADER.reset_sources
   end
 
   describe "argument precedence" do

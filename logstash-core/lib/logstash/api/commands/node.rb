@@ -9,7 +9,7 @@ module LogStash
 
         def all(selected_fields=[])
           payload = {
-            :pipeline => pipeline,
+            :pipelines => pipelines,
             :os => os,
             :jvm => jvm
           }
@@ -17,12 +17,20 @@ module LogStash
           payload
         end
 
+        def pipelines
+          pipeline_ids = service.get_shallow(:stats, :pipelines).keys
+          result = {}
+          pipeline_ids.each do |pipeline_id|
+            result[pipeline_id] = pipeline(pipeline_id)
+          end
+          result
+        end
+
         def pipeline(pipeline_id = LogStash::SETTINGS.get("pipeline.id").to_sym)
           stats = extract_metrics(
             [:stats, :pipelines, pipeline_id, :config],
             :workers, :batch_size, :batch_delay, :config_reload_automatic, :config_reload_interval
           )
-          stats.merge(:id => pipeline_id)
         end
 
         def os

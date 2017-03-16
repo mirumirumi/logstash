@@ -41,14 +41,25 @@ module LogStash
         def events
           extract_metrics(
             [:stats, :events],
-            :in, :filtered, :out, :duration_in_millis
+            :in, :filtered, :out, :duration_in_millis, :queue_push_duration_in_millis
           )
         end
 
-        def pipeline(pipeline_id = LogStash::SETTINGS.get("pipeline.id").to_sym)
-          stats = service.get_shallow(:stats, :pipelines, pipeline_id)
-          stats = PluginsStats.report(stats)
-          stats.merge(:id => pipeline_id)
+        def pipeline(pipeline_id = nil)
+          result = {}
+          if pipeline_id.nil?
+            pipeline_ids = service.get_shallow(:stats, :pipelines).keys
+            pipeline_ids.each do |pipeline_id|
+              stats = service.get_shallow(:stats, :pipelines, pipeline_id)
+              result[pipeline_id] = PluginsStats.report(stats)
+            end
+          else
+            stats = service.get_shallow(:stats, :pipelines, pipeline_id.to_sym)
+            result[pipeline_id] = PluginsStats.report(stats)
+          end
+          result
+        rescue # failed to find pipeline
+          {}
         end
 
         def memory

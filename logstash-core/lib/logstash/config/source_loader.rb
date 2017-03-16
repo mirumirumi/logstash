@@ -1,5 +1,6 @@
 # encoding: utf-8
 require "logstash/config/source/local"
+require "logstash/config/source/multi_local"
 require "logstash/errors"
 require "thread"
 require "set"
@@ -108,6 +109,11 @@ module LogStash module Config
     def add_source(new_source)
       logger.debug("Adding source", :source => new_source.to_s)
       @sources_lock.synchronize { @sources << new_source }
+    end
+
+    def reset_sources
+      logger.debug("Clearing all sources")
+      @sources_lock.synchronize { @sources = Set.new }
     end
 
     private
