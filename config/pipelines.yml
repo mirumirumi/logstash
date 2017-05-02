@@ -1,0 +1,8 @@
+# - pipeline.id: test
+#   pipeline.workers: 1
+#   pipeline.batch.size: 1
+#   config.string: "input { generator {} } filter { sleep { time => 1 } } output { stdout { codec => plain { format => '1' } } }"
+# - pipeline.id: another_test
+#   pipeline.workers: 2
+#   pipeline.batch.size: 1
+#   config.string: "input { generator {} } filter { sleep { time => 1 } } output { stdout { codec => dots } }"
