@@ -137,6 +137,11 @@ module LogStash
       end
     end
 
+    def ==(other)
+      return false unless other.kind_of?(::LogStash::Settings)
+      self.to_hash == other.to_hash
+    end
+
     private
     def read_yaml(path)
       YAML.safe_load(IO.read(path)) || {}

@@ -19,7 +19,7 @@ module LogStash
     def self.from_settings(settings)
       pipeline_settings = self.new
       SETTINGS_WHITE_LIST.each do |setting|
-        pipeline_settings.register(settings.get_setting(setting))
+        pipeline_settings.register(settings.get_setting(setting).clone)
       end
       pipeline_settings
     end
