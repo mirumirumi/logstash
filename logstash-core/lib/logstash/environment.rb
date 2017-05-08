@@ -19,13 +19,11 @@ module LogStash
             Setting::String.new("node.name", Socket.gethostname),
     Setting::NullableString.new("path.config", nil, false),
  Setting::WritableDirectory.new("path.data", ::File.join(LogStash::Environment::LOGSTASH_HOME, "data")),
-           Setting::Boolean.new("config.multi_pipeline", false),
     Setting::NullableString.new("config.string", nil, false),
            Setting::Boolean.new("config.test_and_exit", false),
            Setting::Boolean.new("config.reload.automatic", false),
            Setting::Numeric.new("config.reload.interval", 3), # in seconds
            Setting::Boolean.new("metric.collect", true),
-                    Setting.new("pipelines", Array, []),
             Setting::String.new("pipeline.id", "main"),
            Setting::Boolean.new("pipeline.system", false),
    Setting::PositiveInteger.new("pipeline.workers", LogStash::Config::CpuCoreStrategy.maximum),

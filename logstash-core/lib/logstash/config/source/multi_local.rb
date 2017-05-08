@@ -1,6 +1,7 @@
 # encoding: utf-8
 require "logstash/config/source/local"
 require "logstash/util/loggable"
+require "logstash/pipeline_settings"
 
 module LogStash module Config module Source
 
@@ -19,7 +20,8 @@ module LogStash module Config module Source
         raise ConfigurationError.new("Pipelines YAML file contains duplicate pipeline ids: #{duplicate_pipeline_ids.inspect}. Location: #{pipelines_yaml_location}")
       else
         pipelines.map do |pipeline_settings|
-          @settings = @original_settings.clone.merge(pipeline_settings)
+          @settings = ::LogStash::PipelineSettings.from_settings(@original_settings.clone)
+          @settings = @settings.merge(pipeline_settings)
           # this relies on instance variable @settings and the parent class' pipeline_configs
           # method. The alternative is to refactor most of the Local source methods to accept
           # a settings object instead of relying on @settings.
