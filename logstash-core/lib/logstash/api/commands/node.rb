@@ -26,9 +26,9 @@ module LogStash
           result
         end
 
-        def pipeline(pipeline_id = LogStash::SETTINGS.get("pipeline.id").to_sym)
+        def pipeline(pipeline_id = LogStash::SETTINGS.get("pipeline.id"))
           stats = extract_metrics(
-            [:stats, :pipelines, pipeline_id, :config],
+            [:stats, :pipelines, pipeline_id.to_sym, :config],
             :workers, :batch_size, :batch_delay, :config_reload_automatic, :config_reload_interval
           )
         end
