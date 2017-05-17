@@ -12,7 +12,7 @@ describe LogStash::Timestamp do
   end
 
   it "should coerce iso8601 string" do
-    t = Time.now
+    t = DateTime.now.to_time
     ts = LogStash::Timestamp.new(t)
     expect(LogStash::Timestamp.coerce(ts.to_iso8601).to_i).to eq(t.to_i)
   end
@@ -57,14 +57,14 @@ describe LogStash::Timestamp do
   end
 
   it "should allow unary operation +" do
-    current = Time.now
+    current = DateTime.now.to_time
     t = LogStash::Timestamp.new(current) + 10
     expect(t).to eq(current + 10)
   end
 
   describe "subtraction" do
     it "should work on a timestamp object" do
-      t = Time.now
+      t = DateTime.now.to_time
       current = LogStash::Timestamp.new(t)
       future = LogStash::Timestamp.new(t + 10)
       expect(future - current).to eq(10)
@@ -77,7 +77,7 @@ describe LogStash::Timestamp do
     end
 
     it "should work with numeric value" do
-      current = Time.now
+      current = DateTime.now.to_time
       t = LogStash::Timestamp.new(current + 10)
       expect(t - 10).to eq(current)
     end
