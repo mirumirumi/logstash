@@ -96,7 +96,7 @@ describe LogStash::Timestamp do
   end
 
   context "numeric casting methods" do
-    let (:now) {Time.now}
+    let (:now) {DateTime.now.to_time}
     subject { LogStash::Timestamp.new(now) }
 
     it "should support to_i" do
