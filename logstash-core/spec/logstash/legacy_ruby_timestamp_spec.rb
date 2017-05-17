@@ -71,7 +71,7 @@ describe LogStash::Timestamp do
     end
 
     it "should work on with time object" do
-      current = Time.now
+      current = DateTime.now.to_time
       t = LogStash::Timestamp.new(current + 10)
       expect(t - current).to eq(10)
     end
