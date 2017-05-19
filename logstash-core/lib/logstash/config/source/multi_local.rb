@@ -31,7 +31,7 @@ module LogStash module Config module Source
     end
 
     def match?
-      true
+      !@settings.get_setting("config.string").set? && !@settings.get_setting("path.config").set?
     end
 
     private

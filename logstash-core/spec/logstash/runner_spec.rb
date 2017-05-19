@@ -41,7 +41,6 @@ describe LogStash::Runner do
     allow(LogStash::Agent).to receive(:new).with(any_args).and_return(agent)
     allow(agent).to receive(:execute)
     allow(agent).to receive(:shutdown)
-    LogStash::Config::SOURCE_LOADER.reset_sources
   end
 
   describe "argument precedence" do
@@ -80,21 +79,6 @@ describe LogStash::Runner do
         subject.run(args)
       end
     end
-
-    context "with no arguments" do
-      let(:args) { [] }
-
-      before(:each) do
-        allow(LogStash::Util::JavaVersion).to receive(:warn_on_bad_java_version)
-      end
-
-      it "should show help" do
-        expect($stderr).to receive(:puts).once
-        expect(subject).to receive(:signal_usage_error).once.and_call_original
-        expect(subject).to receive(:show_short_help).once
-        subject.run(args)
-      end
-    end
   end
 
   context "--pluginpath" do
@@ -123,7 +107,7 @@ describe LogStash::Runner do
 
   context "--auto-reload" do
     subject { LogStash::Runner.new("") }
-    context "when -f is not given" do
+    context "when -e is given" do
 
       let(:args) { ["-r", "-e", "input {} output {}"] }
 

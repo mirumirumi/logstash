@@ -12,6 +12,7 @@ module LogStash
       "config.string", "path.config", "metric.collect", "config.debug",
       "queue.max_events", "queue.checkpoint.acks", "queue.checkpoint.writes", "queue.checkpoint.interval",
       "queue.type", "queue.page_capacity", "queue.max_bytes", "path.queue", "queue.drain",
+      "dead_letter_queue.enable",
       "config.reload.automatic", "config.reload.interval"
     ]
 
