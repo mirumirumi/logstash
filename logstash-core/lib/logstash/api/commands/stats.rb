@@ -58,7 +58,6 @@ module LogStash
             :heap_used_percent => memory[:heap][:used_percent],
             :heap_committed_in_bytes => memory[:heap][:committed_in_bytes],
             :heap_max_in_bytes => memory[:heap][:max_in_bytes],
-            :heap_used_in_bytes => memory[:heap][:used_in_bytes],
             :non_heap_used_in_bytes => memory[:non_heap][:used_in_bytes],
             :non_heap_committed_in_bytes => memory[:non_heap][:committed_in_bytes],
             :pools => memory[:pools].inject({}) do |acc, (type, hash)|
