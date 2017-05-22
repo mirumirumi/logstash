@@ -50,7 +50,7 @@ module LogStash
           if pipeline_id.nil?
             pipeline_ids = service.get_shallow(:stats, :pipelines).keys
             pipeline_ids.each do |pipeline_id|
-              stats = service.get_shallow(:stats, :pipelines, pipeline_id)
+              stats = service.get_shallow(:stats, :pipelines, pipeline_id.to_sym)
               result[pipeline_id] = PluginsStats.report(stats)
             end
           else
