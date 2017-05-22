@@ -61,7 +61,7 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample "example" do
+    test_filters "example" do
       insist { subject.get("new_field") } == ["new_value", "new_value_2"]
     end
   end
@@ -75,7 +75,7 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("type" => "noop") do
+    test_filters("type" => "noop") do
       insist { subject.get("tags") } == ["test"]
     end
   end
@@ -89,11 +89,11 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("type" => "noop") do
+    test_filters("type" => "noop") do
       insist { subject.get("tags") } == ["test"]
     end
 
-    sample("type" => "noop", "tags" => ["t1", "t2"]) do
+    test_filters("type" => "noop", "tags" => ["t1", "t2"]) do
       insist { subject.get("tags") } == ["t1", "t2", "test"]
     end
   end
@@ -107,11 +107,11 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("type" => "noop") do
+    test_filters("type" => "noop") do
       insist { subject.get("tags") } == ["bar"]
     end
 
-    sample("type" => "noop", "tags" => "foo") do
+    test_filters("type" => "noop", "tags" => "foo") do
       insist { subject.get("tags") } == ["foo", "bar"]
     end
   end
@@ -125,7 +125,7 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("type" => "noop", "tags" => "foo") do
+    test_filters("type" => "noop", "tags" => "foo") do
       # this is completely weird but seems to be already expected in other specs
       insist { subject.get("tags") } == ["foo", "foo"]
     end
@@ -140,19 +140,19 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("type" => "noop") do
+    test_filters("type" => "noop") do
       insist { subject.get("tags") } == ["test"]
     end
 
-    sample("type" => "noop", "tags" => ["t1"]) do
+    test_filters("type" => "noop", "tags" => ["t1"]) do
       insist { subject.get("tags") } == ["t1", "test"]
     end
 
-    sample("type" => "noop", "tags" => ["t1", "t2"]) do
+    test_filters("type" => "noop", "tags" => ["t1", "t2"]) do
       insist { subject.get("tags") } == ["t1", "t2", "test"]
     end
 
-    sample("type" => "noop", "tags" => ["t1", "t2", "t3"]) do
+    test_filters("type" => "noop", "tags" => ["t1", "t2", "t3"]) do
       insist { subject.get("tags") } == ["t1", "t2", "t3", "test"]
     end
   end
@@ -166,39 +166,39 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("type" => "noop", "tags" => "foo") do
+    test_filters("type" => "noop", "tags" => "foo") do
       insist { subject.get("tags") } == ["foo"]
     end
 
-    sample("type" => "noop", "tags" => "t2") do
+    test_filters("type" => "noop", "tags" => "t2") do
       insist { subject.get("tags") } == []
     end
 
-    sample("type" => "noop", "tags" => ["t2"]) do
+    test_filters("type" => "noop", "tags" => ["t2"]) do
       insist { subject.get("tags") } == []
     end
 
-    sample("type" => "noop", "tags" => ["t4"]) do
+    test_filters("type" => "noop", "tags" => ["t4"]) do
       insist { subject.get("tags") } == ["t4"]
     end
 
-    sample("type" => "noop", "tags" => ["t1", "t2", "t3"]) do
+    test_filters("type" => "noop", "tags" => ["t1", "t2", "t3"]) do
       insist { subject.get("tags") } == ["t1"]
     end
 
     # also test from Json deserialized data to test the handling of native Java collections by JrJackson
     # see https://github.com/elastic/logstash/issues/2261
-    sample(LogStash::Json.load("{\"type\":\"noop\", \"tags\":[\"t1\", \"t2\", \"t3\"]}")) do
+    test_filters(LogStash::Json.load("{\"type\":\"noop\", \"tags\":[\"t1\", \"t2\", \"t3\"]}")) do
       insist { subject.get("tags") } == ["t1"]
     end
 
-    sample("type" => "noop", "tags" => ["t1", "t2"]) do
+    test_filters("type" => "noop", "tags" => ["t1", "t2"]) do
       insist { subject.get("tags") } == ["t1"]
     end
 
     # also test from Json deserialized data to test the handling of native Java collections by JrJackson
     # see https://github.com/elastic/logstash/issues/2261
-    sample(LogStash::Json.load("{\"type\":\"noop\", \"tags\":[\"t1\", \"t2\"]}")) do
+    test_filters(LogStash::Json.load("{\"type\":\"noop\", \"tags\":[\"t1\", \"t2\"]}")) do
       insist { subject.get("tags") } == ["t1"]
     end
   end
@@ -212,13 +212,13 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("type" => "noop", "tags" => ["t1", "goaway", "t3"], "blackhole" => "goaway") do
+    test_filters("type" => "noop", "tags" => ["t1", "goaway", "t3"], "blackhole" => "goaway") do
       insist { subject.get("tags") } == ["t1", "t3"]
     end
 
     # also test from Json deserialized data to test the handling of native Java collections by JrJackson
     # see https://github.com/elastic/logstash/issues/2261
-    sample(LogStash::Json.load("{\"type\":\"noop\", \"tags\":[\"t1\", \"goaway\", \"t3\"], \"blackhole\":\"goaway\"}")) do
+    test_filters(LogStash::Json.load("{\"type\":\"noop\", \"tags\":[\"t1\", \"goaway\", \"t3\"], \"blackhole\":\"goaway\"}")) do
       insist { subject.get("tags") } == ["t1", "t3"]
     end
   end
@@ -232,17 +232,17 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("type" => "noop", "t4" => "four") do
+    test_filters("type" => "noop", "t4" => "four") do
       insist { subject }.include?("t4")
     end
 
-    sample("type" => "noop", "t1" => "one", "t2" => "two", "t3" => "three") do
+    test_filters("type" => "noop", "t1" => "one", "t2" => "two", "t3" => "three") do
       insist { subject }.include?("t1")
       reject { subject }.include?("t2")
       reject { subject }.include?("t3")
     end
 
-    sample("type" => "noop", "t1" => "one", "t2" => "two") do
+    test_filters("type" => "noop", "t1" => "one", "t2" => "two") do
       insist { subject }.include?("t1")
       reject { subject }.include?("t2")
     end
@@ -257,7 +257,7 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("tags" => "foo") do
+    test_filters("tags" => "foo") do
       reject { subject }.include?("tags")
     end
   end
@@ -271,7 +271,7 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("type" => "noop", "t1" => {"t2" => "two", "t3" => "three"}) do
+    test_filters("type" => "noop", "t1" => {"t2" => "two", "t3" => "three"}) do
       insist { subject }.include?("t1")
       reject { subject }.include?("[t1][t2]")
       insist { subject }.include?("[t1][t3]")
@@ -287,7 +287,7 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("type" => "noop", "t1" => ["t2", "t3"]) do
+    test_filters("type" => "noop", "t1" => ["t2", "t3"]) do
       insist { subject }.include?("t1")
       insist { subject.get("[t1][0]") } == "t3"
     end
@@ -302,7 +302,7 @@ describe LogStash::Filters::NOOP do
     }
     CONFIG
 
-    sample("type" => "noop", "blackhole" => "go", "go" => "away") do
+    test_filters("type" => "noop", "blackhole" => "go", "go" => "away") do
       insist { subject }.include?("blackhole")
       reject { subject }.include?("go")
     end

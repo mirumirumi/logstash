@@ -363,7 +363,7 @@ describe LogStash::Pipeline do
         }
       CONFIG
 
-      sample("hello") do
+      test_filters("hello") do
         expect(subject.get("message")).to eq("hello")
       end
     end
@@ -381,7 +381,7 @@ describe LogStash::Pipeline do
         }
       CONFIG
 
-      sample(["foo", "bar"]) do
+      test_filters(["foo", "bar"]) do
         expect(subject.size).to eq(2)
         expect(subject[0].get("message")).to eq("foo\nbar")
         expect(subject[0].get("type")).to be_nil
@@ -440,7 +440,7 @@ describe LogStash::Pipeline do
         }
       CONFIG
 
-      sample("hello") do
+      test_filters("hello") do
         expect(subject.size).to eq(3)
 
         expect(subject[0].get("message")).to eq("hello")
