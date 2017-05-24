@@ -46,18 +46,14 @@ module LogStash
         end
 
         def pipeline(pipeline_id = nil)
-          result = {}
           if pipeline_id.nil?
             pipeline_ids = service.get_shallow(:stats, :pipelines).keys
-            pipeline_ids.each do |pipeline_id|
-              stats = service.get_shallow(:stats, :pipelines, pipeline_id.to_sym)
-              result[pipeline_id] = PluginsStats.report(stats)
+            pipeline_ids.each_with_object({}) do |pipeline_id, result|
+              result[pipeline_id] = plugins_stats_report(pipeline_id)
             end
           else
-            stats = service.get_shallow(:stats, :pipelines, pipeline_id.to_sym)
-            result[pipeline_id] = PluginsStats.report(stats)
+            { pipeline_id => plugins_stats_report(pipeline_id) }
           end
-          result
         rescue # failed to find pipeline
           {}
         end
@@ -94,6 +90,12 @@ module LogStash
 
         def hot_threads(options={})
           HotThreadsReport.new(self, options)
+        end
+
+        private
+        def plugins_stats_report(pipeline_id)
+          stats = service.get_shallow(:stats, :pipelines, pipeline_id.to_sym)
+          PluginsStats.report(stats)
         end
 
         module PluginsStats

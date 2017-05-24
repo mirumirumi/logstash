@@ -6,14 +6,29 @@ module LogStash
 
     # there are settings that the pipeline uses and can be changed per pipeline instance
     SETTINGS_WHITE_LIST = [
-      "pipeline.id", "pipeline.system", "pipeline.reloadable",
-      "pipeline.workers", "pipeline.output.workers",
-      "pipeline.batch.size", "pipeline.batch.delay",
-      "config.string", "path.config", "metric.collect", "config.debug",
-      "queue.max_events", "queue.checkpoint.acks", "queue.checkpoint.writes", "queue.checkpoint.interval",
-      "queue.type", "queue.page_capacity", "queue.max_bytes", "path.queue", "queue.drain",
+      "config.debug",
+      "config.reload.automatic",
+      "config.reload.interval",
+      "config.string",
       "dead_letter_queue.enable",
-      "config.reload.automatic", "config.reload.interval"
+      "metric.collect",
+      "path.config",
+      "path.queue",
+      "pipeline.batch.delay",
+      "pipeline.batch.size",
+      "pipeline.id",
+      "pipeline.output.workers",
+      "pipeline.reloadable",
+      "pipeline.system",
+      "pipeline.workers",
+      "queue.checkpoint.acks",
+      "queue.checkpoint.interval",
+      "queue.checkpoint.writes",
+      "queue.drain",
+      "queue.max_bytes",
+      "queue.max_events",
+      "queue.page_capacity",
+      "queue.type",
     ]
 
     # register a set of settings that is used as the default set of pipelines settings

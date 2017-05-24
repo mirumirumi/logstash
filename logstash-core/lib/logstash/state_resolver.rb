@@ -19,8 +19,6 @@ module LogStash
         if pipeline.nil?
           actions << LogStash::PipelineAction::Create.new(pipeline_config, @metric)
         else
-          # TODO(ph): The pipeline should keep a reference to the original PipelineConfig
-          # and we could use straight comparison.
           if pipeline_config != pipeline.pipeline_config
             actions << LogStash::PipelineAction::Reload.new(pipeline_config, @metric)
           end

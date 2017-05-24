@@ -111,11 +111,6 @@ module LogStash module Config
       @sources_lock.synchronize { @sources << new_source }
     end
 
-    def reset_sources
-      logger.debug("Clearing all sources")
-      @sources_lock.synchronize { @sources = Set.new }
-    end
-
     private
     def config_debug?
       @settings.get_value("config.debug") && logger.debug?

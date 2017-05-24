@@ -19,11 +19,9 @@ module LogStash
 
         def pipelines
           pipeline_ids = service.get_shallow(:stats, :pipelines).keys
-          result = {}
-          pipeline_ids.each do |pipeline_id|
+          pipeline_ids.each_with_object({}) do |pipeline_id, result|
             result[pipeline_id] = pipeline(pipeline_id)
           end
-          result
         end
 
         def pipeline(pipeline_id = LogStash::SETTINGS.get("pipeline.id"))

@@ -4,7 +4,6 @@ require "logstash/util/loggable"
 require "logstash/pipeline_settings"
 
 module LogStash module Config module Source
-
   class MultiLocal < Local
     include LogStash::Util::Loggable
 
