@@ -26,7 +26,7 @@ module LogStash module Config module Source
     end
 
     def match?
-      !@settings.get_setting("config.string").set? && !@settings.get_setting("path.config").set?
+      !@original_settings.get_setting("config.string").set? && !@original_settings.get_setting("path.config").set?
     end
 
     def retrieve_yaml_pipelines
@@ -42,6 +42,7 @@ module LogStash module Config module Source
     end
 
     def read_pipelines_from_yaml(yaml_location)
+      logger.debug("Reading pipeline configurations from YAML", :location => pipelines_yaml_location)
       ::YAML.load(IO.read(yaml_location))
     rescue => e
       raise ConfigurationError.new("Failed to read pipelines yaml file. Location: #{yaml_location}, Exception: #{e.inspect}")
