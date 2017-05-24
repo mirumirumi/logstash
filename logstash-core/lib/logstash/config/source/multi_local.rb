@@ -14,28 +14,23 @@ module LogStash module Config module Source
 
     def pipeline_configs
       pipelines = retrieve_yaml_pipelines()
-      duplicate_pipeline_ids = detect_duplicate_pipelines(pipelines)
-      if duplicate_pipeline_ids.any?
-        raise ConfigurationError.new("Pipelines YAML file contains duplicate pipeline ids: #{duplicate_pipeline_ids.inspect}. Location: #{pipelines_yaml_location}")
-      else
-        pipelines.map do |pipeline_settings|
-          @settings = ::LogStash::PipelineSettings.from_settings(@original_settings.clone)
-          @settings = @settings.merge(pipeline_settings)
-          # this relies on instance variable @settings and the parent class' pipeline_configs
-          # method. The alternative is to refactor most of the Local source methods to accept
-          # a settings object instead of relying on @settings.
-          super # create a PipelineConfig object based on @settings
-        end
-      end
+      detect_duplicate_pipelines(pipelines)
+      pipelines.map do |pipeline_settings|
+        @settings = ::LogStash::PipelineSettings.from_settings(@original_settings.clone)
+        @settings = @settings.merge(pipeline_settings)
+        # this relies on instance variable @settings and the parent class' pipeline_configs
+        # method. The alternative is to refactor most of the Local source methods to accept
+        # a settings object instead of relying on @settings.
+        super # create a PipelineConfig object based on @settings
+      end.flatten
     end
 
     def match?
       !@settings.get_setting("config.string").set? && !@settings.get_setting("path.config").set?
     end
 
-    private
     def retrieve_yaml_pipelines
-      result = read_pipelines_yaml()
+      result = read_pipelines_from_yaml(pipelines_yaml_location)
       case result
       when Array
         result
@@ -46,10 +41,10 @@ module LogStash module Config module Source
       end
     end
 
-    def read_pipelines_yaml
-      ::YAML.load(IO.read(pipelines_yaml_location()))
+    def read_pipelines_from_yaml(yaml_location)
+      ::YAML.load(IO.read(yaml_location))
     rescue => e
-      raise ConfigurationError.new("Failed to read pipelines yaml file. Location: #{pipelines_yaml_location}, Exception: #{e.inspect}")
+      raise ConfigurationError.new("Failed to read pipelines yaml file. Location: #{yaml_location}, Exception: #{e.inspect}")
     end
 
     def pipelines_yaml_location
@@ -57,7 +52,10 @@ module LogStash module Config module Source
     end
 
     def detect_duplicate_pipelines(pipelines)
-      pipelines.group_by {|pipeline| pipeline["pipeline.id"] }.select {|k, v| v.size > 1 }.map {|k, v| k}
+      duplicate_ids = pipelines.group_by {|pipeline| pipeline["pipeline.id"] }.select {|k, v| v.size > 1 }.map {|k, v| k}
+      if duplicate_ids.any?
+        raise ConfigurationError.new("Pipelines YAML file contains duplicate pipeline ids: #{duplicate_ids.inspect}. Location: #{pipelines_yaml_location}")
+      end
     end
   end
 end end end
