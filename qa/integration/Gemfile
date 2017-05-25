@@ -1,3 +1,2 @@
 source "https://rubygems.org"
 gemspec
-gem "logstash-devutils", :path => "/Users/joaoduarte/projects/logstash-devutils"
