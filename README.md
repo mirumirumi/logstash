@@ -31,7 +31,7 @@ For the daring, snapshot builds from `master` branch are available. These builds
 
 - [Logstash Forum](https://discuss.elastic.co/c/logstash)
 - [Logstash Documentation](https://www.elastic.co/guide/en/logstash/current/index.html)
-- [#logstash on freenode IRC](https://webchat.freenode.net/?channels=logstash)
+- [logstash on freenode IRC](https://webchat.freenode.net/?channels=logstash)
 - [Logstash Product Information](https://www.elastic.co/products/logstash)
 - [Elastic Support](https://www.elastic.co/subscriptions)
 
